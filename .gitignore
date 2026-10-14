@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+**/node_modules/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment and sensitive keys
+.env
+*.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+**/.env.example
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+**/dist/
+**/dist-ssr/
+**/build/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini

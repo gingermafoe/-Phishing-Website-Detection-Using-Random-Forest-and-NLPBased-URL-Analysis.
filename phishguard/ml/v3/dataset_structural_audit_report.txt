@@ -1,0 +1,61 @@
+================================================================================
+PHISHGUARD V3 — DATASET STRUCTURAL DISTRIBUTION AUDIT REPORT
+================================================================================
+
+Dataset: PhiUSIIL Phishing URL Dataset
+Total Unique URLs Analyzed: 235,370
+Legitimate URLs (Label=1): 134,850 (57.3%)
+Phishing URLs (Label=0):   100,520 (42.7%)
+
+--------------------------------------------------------------------------------
+1. STRUCTURAL COMPONENT PERCENTAGES (LEGITIMATE vs PHISHING)
+--------------------------------------------------------------------------------
+Structural Feature             | Legitimate %    | Phishing %      | Phish/Legit Ratio
+--------------------------------------------------------------------------------
+has_path                       | 0.00          % | 27.14         % | 271379.83x     
+has_query_qmark                | 0.00          % | 6.10          % | 61023.68x      
+has_equals                     | 0.00          % | 5.45          % | 54527.46x      
+has_ampersand                  | 0.00          % | 2.80          % | 28005.38x      
+has_fragment_hash              | 0.00          % | 0.86          % | 8646.05x       
+is_https                       | 100.00        % | 49.12         % | N/A            
+
+--------------------------------------------------------------------------------
+2. DISTRIBUTION METRICS (MEDIAN, MEAN, STD, IQR)
+--------------------------------------------------------------------------------
+
+[Feature: URLLength]
+  Legitimate: Mean=26.23, Median=26.0, IQR=[23.0, 29.0], Range=[15, 57]
+  Phishing:   Mean=45.70, Median=34.0, IQR=[26.0, 48.0], Range=[13, 6097]
+
+[Feature: PathDepth]
+  Legitimate: Mean=0.00, Median=0.0, IQR=[0.0, 0.0], Range=[0, 0]
+  Phishing:   Mean=0.59, Median=0.0, IQR=[0.0, 1.0], Range=[0, 33]
+
+[Feature: NoOfSubDomain]
+  Legitimate: Mean=1.16, Median=1.0, IQR=[1.0, 1.0], Range=[1, 4]
+  Phishing:   Mean=1.17, Median=1.0, IQR=[1.0, 1.0], Range=[0, 10]
+
+[Feature: NoOfOtherSpecialCharsInURL]
+  Legitimate: Mean=1.24, Median=1.0, IQR=[1.0, 1.0], Range=[0, 7]
+  Phishing:   Mean=3.80, Median=3.0, IQR=[2.0, 5.0], Range=[1, 499]
+
+[Feature: DegitRatioInURL]
+  Legitimate: Mean=0.00, Median=0.0, IQR=[0.0, 0.0], Range=[0, 0]
+  Phishing:   Mean=0.06, Median=0.0, IQR=[0.0, 0.1], Range=[0, 1]
+
+[Feature: DomainLength]
+  Legitimate: Mean=19.23, Median=19.0, IQR=[16.0, 22.0], Range=[8, 50]
+  Phishing:   Mean=24.44, Median=22.0, IQR=[16.0, 29.0], Range=[4, 110]
+
+================================================================================
+3. ROOT CAUSE SUMMARY OF V2 SHORTCUT LEARNING
+================================================================================
+- Query '?' presence: Legitimate = 0.00% vs Phishing = 6.10%
+- Parameter '=' presence: Legitimate = 0.00% vs Phishing = 5.45%
+- Parameter '&' presence: Legitimate = 0.00% vs Phishing = 2.80%
+- Path presence: Legitimate = 0.00% vs Phishing = 27.14%
+
+Conclusion: In PhiUSIIL, legitimate URLs are overwhelmingly root or shallow URLs without queries.
+Any URL with query parameters ('?', '=', '&') or deep paths is overwhelmingly phishing in the training set.
+The decision trees learn to split on NoOfQMarkInURL > 0, NoOfEqualsInURL > 0, NoOfAmpersandInURL > 0,
+and URLLength > 40 as immediate shortcuts to phishing!

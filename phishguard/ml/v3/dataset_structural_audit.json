@@ -1,0 +1,160 @@
+{
+  "sample_counts": {
+    "total": 235370,
+    "legitimate": 134850,
+    "phishing": 100520
+  },
+  "structural_percentages": {
+    "has_path": {
+      "legitimate": 0.0,
+      "phishing": 27.137883008356546,
+      "ratio_phish_to_legit": 271379.83008356544
+    },
+    "has_query_qmark": {
+      "legitimate": 0.0,
+      "phishing": 6.1022682053322725,
+      "ratio_phish_to_legit": 61023.68205332273
+    },
+    "has_equals": {
+      "legitimate": 0.0,
+      "phishing": 5.452646239554317,
+      "ratio_phish_to_legit": 54527.462395543174
+    },
+    "has_ampersand": {
+      "legitimate": 0.0,
+      "phishing": 2.8004377238360525,
+      "ratio_phish_to_legit": 28005.37723836053
+    },
+    "has_fragment_hash": {
+      "legitimate": 0.0,
+      "phishing": 0.8645045762037405,
+      "ratio_phish_to_legit": 8646.045762037405
+    },
+    "is_https": {
+      "legitimate": 100.0,
+      "phishing": 49.1225626740947
+    }
+  },
+  "distributions": {
+    "URLLength": {
+      "legitimate": {
+        "mean": 26.228609566184648,
+        "std": 4.815612058586098,
+        "min": 15.0,
+        "p25": 23.0,
+        "median": 26.0,
+        "p75": 29.0,
+        "max": 57.0
+      },
+      "phishing": {
+        "mean": 45.70284520493434,
+        "std": 61.25256760361406,
+        "min": 13.0,
+        "p25": 26.0,
+        "median": 34.0,
+        "p75": 48.0,
+        "max": 6097.0
+      }
+    },
+    "PathDepth": {
+      "legitimate": {
+        "mean": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.0,
+        "max": 0.0
+      },
+      "phishing": {
+        "mean": 0.5869578193394349,
+        "std": 1.259620709945524,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 1.0,
+        "max": 33.0
+      }
+    },
+    "NoOfSubDomain": {
+      "legitimate": {
+        "mean": 1.1616611049314052,
+        "std": 0.40407592606077336,
+        "min": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 4.0
+      },
+      "phishing": {
+        "mean": 1.1693792280143256,
+        "std": 0.7910963387622252,
+        "min": 0.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 10.0
+      }
+    },
+    "NoOfOtherSpecialCharsInURL": {
+      "legitimate": {
+        "mean": 1.2448350018539118,
+        "std": 0.5039611837409527,
+        "min": 0.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "max": 7.0
+      },
+      "phishing": {
+        "mean": 3.7997711898129727,
+        "std": 5.0056594029290435,
+        "min": 1.0,
+        "p25": 2.0,
+        "median": 3.0,
+        "p75": 5.0,
+        "max": 499.0
+      }
+    },
+    "DegitRatioInURL": {
+      "legitimate": {
+        "mean": 0.0021151946607341487,
+        "std": 0.01468164707962688,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.0,
+        "max": 0.348
+      },
+      "phishing": {
+        "mean": 0.06393319737365699,
+        "std": 0.09622314299712544,
+        "min": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.102,
+        "max": 0.684
+      }
+    },
+    "DomainLength": {
+      "legitimate": {
+        "mean": 19.228609566184648,
+        "std": 4.815612058586098,
+        "min": 8.0,
+        "p25": 16.0,
+        "median": 19.0,
+        "p75": 22.0,
+        "max": 50.0
+      },
+      "phishing": {
+        "mean": 24.4441504178273,
+        "std": 12.181598970574273,
+        "min": 4.0,
+        "p25": 16.0,
+        "median": 22.0,
+        "p75": 29.0,
+        "max": 110.0
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "project_title": "PhishGuard V2 - Canonical Feature Engineering & Representation Experiment",
+  "experiment_phase": "PHASE 2 - Real-World Generalization & Apex Domain Bias Mitigation",
+  "timestamp": "2026-10-04 17:47:56",
+  "data_split_strategy": {
+    "method": "Domain-Aware GroupSplit on BaseDomain",
+    "rationale": "Prevents any domain normalization equivalent (e.g. www.example.com and example.com) from bridging train and test partitions",
+    "train_samples": 188086,
+    "test_samples": 47284,
+    "unique_train_domains": 175282,
+    "unique_test_domains": 43821,
+    "domain_overlap": 0,
+    "train_distribution": {
+      "1_legitimate": 107684,
+      "0_phishing": 80402
+    },
+    "test_distribution": {
+      "1_legitimate": 27166,
+      "0_phishing": 20118
+    }
+  },
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": null,
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "held_out_metrics_v2": {
+    "accuracy": 0.9865493613061501,
+    "precision": 0.9834536044901232,
+    "recall": 0.9933004490907752,
+    "f1_score": 0.9883525016482309,
+    "false_positive_rate": 0.022566855552241773,
+    "false_negative_rate": 0.006699550909224766,
+    "confusion_matrix": {
+      "true_negative_phish": 19664,
+      "false_positive_legit": 454,
+      "false_negative_phish": 182,
+      "true_positive_legit": 26984
+    }
+  },
+  "feature_importances": [
+    {
+      "feature": "IsHTTPS",
+      "importance": 0.3602479630152598
+    },
+    {
+      "feature": "NoOfOtherSpecialCharsInURL",
+      "importance": 0.11316184594771504
+    },
+    {
+      "feature": "NoOfDegitsInURL",
+      "importance": 0.07295705629707075
+    },
+    {
+      "feature": "DegitRatioInURL",
+      "importance": 0.06599293203855637
+    },
+    {
+      "feature": "URLCharProb",
+      "importance": 0.05859091241502093
+    },
+    {
+      "feature": "URLLength",
+      "importance": 0.05419140092406638
+    },
+    {
+      "feature": "TLDLegitimateProb",
+      "importance": 0.04989393629717424
+    },
+    {
+      "feature": "NoOfLettersInURL",
+      "importance": 0.04365461948284229
+    },
+    {
+      "feature": "CharContinuationRate",
+      "importance": 0.035743935558574386
+    },
+    {
+      "feature": "NoOfSubDomain",
+      "importance": 0.03525921478629374
+    },
+    {
+      "feature": "LetterRatioInURL",
+      "importance": 0.032330146642087144
+    },
+    {
+      "feature": "DomainLength",
+      "importance": 0.02947040426533205
+    },
+    {
+      "feature": "SpacialCharRatioInURL",
+      "importance": 0.02690192091275894
+    },
+    {
+      "feature": "TLDLength",
+      "importance": 0.020059863739750553
+    },
+    {
+      "feature": "NoOfQMarkInURL",
+      "importance": 0.0011148940061844889
+    },
+    {
+      "feature": "NoOfEqualsInURL",
+      "importance": 0.0002922569391207656
+    },
+    {
+      "feature": "NoOfAmpersandInURL",
+      "importance": 0.0001325978454161731
+    },
+    {
+      "feature": "IsDomainIP",
+      "importance": 2.859407656689125e-06
+    },
+    {
+      "feature": "NoOfObfuscatedChar",
+      "importance": 8.52319558521204e-07
+    },
+    {
+      "feature": "HasObfuscation",
+      "importance": 3.2818796901671754e-07
+    },
+    {
+      "feature": "ObfuscationRatio",
+      "importance": 5.8971591829988724e-08
+    }
+  ]
+}

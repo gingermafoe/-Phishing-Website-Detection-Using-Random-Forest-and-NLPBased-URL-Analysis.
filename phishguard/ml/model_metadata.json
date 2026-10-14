@@ -1,0 +1,310 @@
+{
+  "project_title": "Phishing Website Detection Using Random Forest",
+  "phase": "PHASE 1 - Dataset Analysis and Random Forest Training",
+  "timestamp": "2026-10-01 09:17:58",
+  "dataset_summary": {
+    "source": "PhiUSIIL Phishing URL Dataset",
+    "total_raw_rows": 235795,
+    "duplicate_urls_removed": 425,
+    "clean_rows": 235370,
+    "total_columns": 55,
+    "train_samples": 188296,
+    "test_samples": 47074,
+    "train_distribution": {
+      "1": 107880,
+      "0": 80416
+    },
+    "test_distribution": {
+      "1": 26970,
+      "0": 20104
+    }
+  },
+  "feature_selection": {
+    "excluded_identifiers": [
+      "URL",
+      "Domain",
+      "TLD",
+      "Title"
+    ],
+    "excluded_leakage": [
+      "URLSimilarityIndex"
+    ],
+    "primary_url_features_count": 21,
+    "primary_url_features": [
+      "URLLength",
+      "DomainLength",
+      "IsDomainIP",
+      "TLDLength",
+      "NoOfSubDomain",
+      "HasObfuscation",
+      "NoOfObfuscatedChar",
+      "ObfuscationRatio",
+      "NoOfLettersInURL",
+      "LetterRatioInURL",
+      "NoOfDegitsInURL",
+      "DegitRatioInURL",
+      "NoOfEqualsInURL",
+      "NoOfQMarkInURL",
+      "NoOfAmpersandInURL",
+      "NoOfOtherSpecialCharsInURL",
+      "SpacialCharRatioInURL",
+      "IsHTTPS",
+      "CharContinuationRate",
+      "TLDLegitimateProb",
+      "URLCharProb"
+    ],
+    "html_content_features_count": 28,
+    "html_content_features": [
+      "LineOfCode",
+      "LargestLineLength",
+      "HasTitle",
+      "DomainTitleMatchScore",
+      "URLTitleMatchScore",
+      "HasFavicon",
+      "Robots",
+      "IsResponsive",
+      "NoOfURLRedirect",
+      "NoOfSelfRedirect",
+      "HasDescription",
+      "NoOfPopup",
+      "NoOfiFrame",
+      "HasExternalFormSubmit",
+      "HasSocialNet",
+      "HasSubmitButton",
+      "HasHiddenFields",
+      "HasPasswordField",
+      "Bank",
+      "Pay",
+      "Crypto",
+      "HasCopyrightInfo",
+      "NoOfImage",
+      "NoOfCSS",
+      "NoOfJS",
+      "NoOfSelfRef",
+      "NoOfEmptyRef",
+      "NoOfExternalRef"
+    ],
+    "all_clean_features_count": 49
+  },
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": null,
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "production_model_metrics": {
+    "feature_set": "URL_LEXICAL_FEATURES (21 features)",
+    "training_time_seconds": 3.35,
+    "accuracy": 0.9966435824446616,
+    "precision": 0.9959307487422314,
+    "recall": 0.9982202447163515,
+    "f1_score": 0.9970741824376875,
+    "confusion_matrix": {
+      "true_negative_phishing": 19994,
+      "false_positive_legit": 110,
+      "false_negative_phish": 48,
+      "true_positive_legit": 26922
+    },
+    "top_15_features": [
+      {
+        "rank": 1,
+        "feature": "IsHTTPS",
+        "importance": 0.3659431530459787,
+        "cumulative": 0.3659431530459787
+      },
+      {
+        "rank": 2,
+        "feature": "NoOfOtherSpecialCharsInURL",
+        "importance": 0.12409614214281946,
+        "cumulative": 0.49003929518879813
+      },
+      {
+        "rank": 3,
+        "feature": "LetterRatioInURL",
+        "importance": 0.07134846022688086,
+        "cumulative": 0.561387755415679
+      },
+      {
+        "rank": 4,
+        "feature": "DegitRatioInURL",
+        "importance": 0.06695984154093662,
+        "cumulative": 0.6283475969566156
+      },
+      {
+        "rank": 5,
+        "feature": "NoOfDegitsInURL",
+        "importance": 0.06614254540126459,
+        "cumulative": 0.6944901423578802
+      },
+      {
+        "rank": 6,
+        "feature": "SpacialCharRatioInURL",
+        "importance": 0.060602825181320374,
+        "cumulative": 0.7550929675392006
+      },
+      {
+        "rank": 7,
+        "feature": "URLLength",
+        "importance": 0.059391068586099306,
+        "cumulative": 0.8144840361253
+      },
+      {
+        "rank": 8,
+        "feature": "NoOfLettersInURL",
+        "importance": 0.04827144980799302,
+        "cumulative": 0.862755485933293
+      },
+      {
+        "rank": 9,
+        "feature": "NoOfSubDomain",
+        "importance": 0.036776376554203655,
+        "cumulative": 0.8995318624874966
+      },
+      {
+        "rank": 10,
+        "feature": "TLDLegitimateProb",
+        "importance": 0.025956841138270393,
+        "cumulative": 0.925488703625767
+      },
+      {
+        "rank": 11,
+        "feature": "URLCharProb",
+        "importance": 0.023847435972376346,
+        "cumulative": 0.9493361395981433
+      },
+      {
+        "rank": 12,
+        "feature": "CharContinuationRate",
+        "importance": 0.02299940604049999,
+        "cumulative": 0.9723355456386433
+      },
+      {
+        "rank": 13,
+        "feature": "DomainLength",
+        "importance": 0.017361457186869683,
+        "cumulative": 0.989697002825513
+      },
+      {
+        "rank": 14,
+        "feature": "TLDLength",
+        "importance": 0.00908836590419496,
+        "cumulative": 0.9987853687297079
+      },
+      {
+        "rank": 15,
+        "feature": "NoOfQMarkInURL",
+        "importance": 0.0008618188926492972,
+        "cumulative": 0.9996471876223572
+      }
+    ]
+  },
+  "benchmark_full_model_metrics": {
+    "feature_set": "ALL_CLEAN_FEATURES (49 features)",
+    "training_time_seconds": 5.29,
+    "accuracy": 0.9998937842545779,
+    "precision": 0.9998887694190056,
+    "recall": 0.9999258435298479,
+    "f1_score": 0.9999073061307725,
+    "confusion_matrix": {
+      "true_negative_phishing": 20101,
+      "false_positive_legit": 3,
+      "false_negative_phish": 2,
+      "true_positive_legit": 26968
+    },
+    "top_15_features": [
+      {
+        "rank": 1,
+        "feature": "LineOfCode",
+        "importance": 0.15888535155844713,
+        "cumulative": 0.15888535155844713
+      },
+      {
+        "rank": 2,
+        "feature": "NoOfSelfRef",
+        "importance": 0.14235776344488493,
+        "cumulative": 0.30124311500333206
+      },
+      {
+        "rank": 3,
+        "feature": "NoOfExternalRef",
+        "importance": 0.13803485902361418,
+        "cumulative": 0.43927797402694624
+      },
+      {
+        "rank": 4,
+        "feature": "NoOfImage",
+        "importance": 0.12472987008902083,
+        "cumulative": 0.564007844115967
+      },
+      {
+        "rank": 5,
+        "feature": "NoOfJS",
+        "importance": 0.06612157900923944,
+        "cumulative": 0.6301294231252065
+      },
+      {
+        "rank": 6,
+        "feature": "NoOfCSS",
+        "importance": 0.05606758176493722,
+        "cumulative": 0.6861970048901437
+      },
+      {
+        "rank": 7,
+        "feature": "HasSocialNet",
+        "importance": 0.049263783435951364,
+        "cumulative": 0.7354607883260951
+      },
+      {
+        "rank": 8,
+        "feature": "HasCopyrightInfo",
+        "importance": 0.04709481294434169,
+        "cumulative": 0.7825556012704368
+      },
+      {
+        "rank": 9,
+        "feature": "HasDescription",
+        "importance": 0.03347765677814652,
+        "cumulative": 0.8160332580485833
+      },
+      {
+        "rank": 10,
+        "feature": "NoOfOtherSpecialCharsInURL",
+        "importance": 0.028943373261856333,
+        "cumulative": 0.8449766313104397
+      },
+      {
+        "rank": 11,
+        "feature": "LargestLineLength",
+        "importance": 0.018811341945121594,
+        "cumulative": 0.8637879732555612
+      },
+      {
+        "rank": 12,
+        "feature": "DomainTitleMatchScore",
+        "importance": 0.015656878385660333,
+        "cumulative": 0.8794448516412215
+      },
+      {
+        "rank": 13,
+        "feature": "IsHTTPS",
+        "importance": 0.015169882977443191,
+        "cumulative": 0.8946147346186647
+      },
+      {
+        "rank": 14,
+        "feature": "HasSubmitButton",
+        "importance": 0.014815071647612728,
+        "cumulative": 0.9094298062662775
+      },
+      {
+        "rank": 15,
+        "feature": "NoOfDegitsInURL",
+        "importance": 0.011063688024106318,
+        "cumulative": 0.9204934942903837
+      }
+    ]
+  }
+}

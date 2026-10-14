@@ -1,0 +1,19 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments and secrets
+.env
+*.env
+.env.*
+!.env.example
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage

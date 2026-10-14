@@ -1,0 +1,84 @@
+================================================================================
+PHISHGUARD: PHASE 2 V1 VS V2 COMPREHENSIVE EVALUATION REPORT
+Generated: 2026-10-04 17:47:56
+================================================================================
+
+1. HELD-OUT DATASET METRICS COMPARISON
+--------------------------------------------------------------------------------
+Metric                    | V1 Model (Baseline)    | V2 Model (Canonical)  
+--------------------------------------------------------------------------------
+Accuracy                  | 99.6644% (0.996644)    | 98.6549% (0.986549)
+Precision                 | 99.5931% (0.995931)    | 98.3454% (0.983454)
+Recall                    | 99.8220% (0.998220)    | 99.3300% (0.993300)
+F1-Score                  | 99.7074% (0.997074)    | 98.8353% (0.988353)
+False Positive Rate (FPR) | 0.5472% (110 FP)       | 2.2567% (454 FP)
+False Negative Rate (FNR) | 0.1780% (48 FN)        | 0.6700% (182 FN)
+
+V2 Confusion Matrix (Held-Out Test Set):
+                     Pred Phish (0)  Pred Legit (1)
+Actual Phish (0)          19664             454
+Actual Legit (1)            182           26984
+
+2. REAL-WORLD BENCHMARK SUITE RESULTS (33 TEST CASES)
+--------------------------------------------------------------------------------
+URL                                              | Category             | Exp   | V1    (Risk) | V2    (Risk)
+--------------------------------------------------------------------------------
+https://chatgpt.com/                             | Legitimate Apex      | legit | phish ( 98) FAIL | legit (  0) OK
+https://chatgpt.com                              | Legitimate Apex      | legit | phish ( 90) FAIL | legit (  0) OK
+https://openai.com                               | Legitimate Apex      | legit | phish ( 91) FAIL | legit (  0) OK
+https://google.com                               | Legitimate Apex      | legit | phish ( 92) FAIL | legit ( 28) OK
+https://github.com                               | Legitimate Apex      | legit | phish ( 91) FAIL | legit ( 29) OK
+https://microsoft.com                            | Legitimate Apex      | legit | phish ( 92) FAIL | legit (  0) OK
+https://apple.com                                | Legitimate Apex      | legit | phish ( 94) FAIL | legit (  0) OK
+https://youtube.com                              | Legitimate Apex      | legit | phish ( 90) FAIL | legit (  1) OK
+https://amazon.com                               | Legitimate Apex      | legit | phish ( 91) FAIL | legit (  0) OK
+https://wikipedia.org                            | Legitimate Apex      | legit | phish ( 92) FAIL | legit (  0) OK
+https://www.chatgpt.com                          | Legitimate WWW       | legit | legit (  7) OK   | legit (  0) OK
+https://www.google.com                           | Legitimate WWW       | legit | legit (  5) OK   | legit (  0) OK
+https://www.microsoft.com                        | Legitimate WWW       | legit | legit (  7) OK   | legit (  0) OK
+https://www.apple.com                            | Legitimate WWW       | legit | legit (  3) OK   | legit (  0) OK
+https://www.youtube.com                          | Legitimate WWW       | legit | legit (  7) OK   | legit (  0) OK
+https://www.amazon.com                           | Legitimate WWW       | legit | legit (  6) OK   | legit (  0) OK
+https://www.wikipedia.org                        | Legitimate WWW       | legit | legit (  6) OK   | legit (  0) OK
+https://github.com/torvalds/linux                | Legitimate Path      | legit | phish ( 99) FAIL | phish ( 98) FAIL
+https://en.wikipedia.org/wiki/Computer_science   | Legitimate Path      | legit | phish ( 98) FAIL | phish (100) FAIL
+https://docs.python.org/3/library/unittest.htm   | Legitimate Path      | legit | phish (100) FAIL | phish (100) FAIL
+https://www.google.com/search?q=cybersecurity    | Legitimate Query     | legit | phish ( 73) FAIL | phish ( 81) FAIL
+https://github.com/search?q=random+forest        | Legitimate Query     | legit | phish ( 95) FAIL | phish ( 92) FAIL
+https://developer.mozilla.org                    | Legitimate Multi-S   | legit | phish (100) FAIL | legit ( 17) OK
+https://cloud.google.com                         | Legitimate Multi-S   | legit | phish ( 91) FAIL | phish ( 99) FAIL
+https://portal.azure.com                         | Legitimate Multi-S   | legit | phish ( 92) FAIL | phish ( 62) FAIL
+http://paypal-security-update.account-verify.c   | Phishing HTTP        | phish | phish (100) OK   | phish (100) OK
+http://www.shprakserf.gq                         | Phishing HTTP Data   | phish | phish ( 95) OK   | phish (100) OK
+http://appleid.apple.com.verify-login.info/aut   | Phishing HTTP Subd   | phish | phish (100) OK   | phish ( 97) OK
+https://netflix-login-billing.com/signin         | Phishing HTTPS       | phish | phish ( 97) OK   | phish ( 91) OK
+https://secure-account-verification-wells-farg   | Phishing HTTPS Sub   | phish | phish ( 96) OK   | phish ( 93) OK
+https://bancochile-en-linea.cl-webauth.com/log   | Phishing HTTPS Mul   | phish | phish ( 97) OK   | phish (100) OK
+http://192.168.1.1/login%20page%20update?sessi   | Phishing Obfuscate   | phish | phish (100) OK   | phish (100) OK
+http://amazon.security-alert.com/order.php?id=   | Phishing Query-Hea   | phish | phish (100) OK   | phish (100) OK
+--------------------------------------------------------------------------------
+V1 Real-World Accuracy: 15/33 (45.5%)
+V2 Real-World Accuracy: 26/33 (78.8%)
+Net False Positives Eliminated: 10 / 10 legitimate apex domains resolved.
+Net False Negatives Introduced: 0 / 8 phishing lures compromised.
+
+3. FEATURE IMPORTANCE COMPARISON (TOP 15)
+--------------------------------------------------------------------------------
+Rank  Feature Name                 V1 Importance    V2 Importance    Delta
+--------------------------------------------------------------------------------
+1     IsHTTPS                      0.365943         0.360248         -0.005695
+2     NoOfOtherSpecialCharsInURL   0.124096         0.113162         -0.010934
+3     NoOfDegitsInURL              0.066143         0.072957         +0.006815
+4     DegitRatioInURL              0.066960         0.065993         -0.000967
+5     URLCharProb                  0.023847         0.058591         +0.034743
+6     URLLength                    0.059391         0.054191         -0.005200
+7     TLDLegitimateProb            0.025957         0.049894         +0.023937
+8     NoOfLettersInURL             0.048271         0.043655         -0.004617
+9     CharContinuationRate         0.022999         0.035744         +0.012745
+10    NoOfSubDomain                0.036776         0.035259         -0.001517
+11    LetterRatioInURL             0.071348         0.032330         -0.039018
+12    DomainLength                 0.017361         0.029470         +0.012109
+13    SpacialCharRatioInURL        0.060603         0.026902         -0.033701
+14    TLDLength                    0.009088         0.020060         +0.010971
+15    NoOfQMarkInURL               0.000862         0.001115         +0.000253
+================================================================================

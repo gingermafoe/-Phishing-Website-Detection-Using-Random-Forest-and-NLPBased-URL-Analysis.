@@ -1,0 +1,76 @@
+==========================================================================================
+PHISHGUARD ML V3 — EVALUATION REPORT & 3-WAY COMPARISON (V1 vs V2 vs V3)
+==========================================================================================
+
+1. DATASET & TRAINING CONFIGURATION
+------------------------------------------------------------------------------------------
+Algorithm:               RandomForestClassifier (n_estimators=100, class_weight='balanced')
+V3 Training Samples:     233,086 (Legitimate: 152,684, Phishing: 80,402)
+Augmented Legitimate:    45,000 structurally realistic samples across categories A-H
+Held-out Test Samples:   47,284 (Legitimate: 27,166, Phishing: 20,118)
+Domain Leakage (Overlap): 0 (Strict GroupShuffleSplit on BaseDomain)
+
+2. HELD-OUT TEST FOLD METRICS COMPARISON
+------------------------------------------------------------------------------------------
+Metric                 | V1 Baseline        | V2 Production      | V3 Experiment     
+------------------------------------------------------------------------------------------
+Accuracy               | 99.62            % | 98.65            % | 97.61            %
+Precision (Phishing)   | 99.93            % | 99.08            % | 99.06            %
+Recall (Phishing)      | 99.17            % | 97.74            % | 95.28            %
+F1 Score (Phishing)    | 99.55            % | 98.41            % | 97.13            %
+FPR (on Legitimate)    | 0.05             % | 0.67             % | 0.67             %
+FNR (on Phishing)      | 0.83             % | 2.26             % | 4.72             %
+
+3. REAL-WORLD STRUCTURAL BENCHMARK SUMMARY (12 CATEGORIES)
+------------------------------------------------------------------------------------------
+Total Benchmark Cases: 46
+V1 Baseline Passed:    20/46 (43.5%)
+V2 Production Passed:  29/46 (63.0%)
+V3 Experiment Passed:  46/46 (100.0%)
+
+4. CATEGORY-BY-CATEGORY BREAKDOWN
+------------------------------------------------------------------------------------------
+Category                               | Count  | V1 Acc   | V2 Acc   | V3 Acc   | V3 Avg Risk 
+------------------------------------------------------------------------------------------
+1. Legitimate apex                     | 6      | 0.0    % | 100.0  % | 100.0  % | 11.7        
+10. Obfuscated URLs                    | 4      | 100.0  % | 100.0  % | 100.0  % | 92.8        
+11. IP-based URLs                      | 4      | 100.0  % | 100.0  % | 100.0  % | 99.8        
+12. Long phishing URLs                 | 4      | 100.0  % | 100.0  % | 100.0  % | 100.0       
+2. Legitimate www                      | 3      | 100.0  % | 100.0  % | 100.0  % | 0.0         
+3. Legitimate single-level path        | 3      | 0.0    % | 0.0    % | 100.0  % | 1.7         
+4. Legitimate deep path                | 4      | 0.0    % | 0.0    % | 100.0  % | 7.5         
+5. Legitimate query                    | 3      | 0.0    % | 0.0    % | 100.0  % | 0.3         
+6. Legitimate query + multiple parameters | 3      | 0.0    % | 0.0    % | 100.0  % | 12.0        
+7. Legitimate fragment                 | 3      | 0.0    % | 0.0    % | 100.0  % | 3.7         
+8. Legitimate multi-subdomain          | 4      | 0.0    % | 75.0   % | 100.0  % | 4.8         
+9. Phishing lure URLs                  | 5      | 100.0  % | 100.0  % | 100.0  % | 98.2        
+
+5. CRITICAL USER-OBSERVED URLS BREAKDOWN
+------------------------------------------------------------------------------------------
+URL                                                | V1 Result      | V2 Result      | V3 Result     
+------------------------------------------------------------------------------------------
+https://www.google.com/search?q=cybersecurity      | phishing (73)  | phishing (81)  | legitimate (0)
+https://github.com/about                           | phishing (99)  | phishing (87)  | legitimate (2)
+https://github.com/search?q=random+forest          | phishing (95)  | phishing (92)  | legitimate (1)
+https://en.wikipedia.org/wiki/Computer_science     | phishing (98)  | phishing (100) | legitimate (0)
+https://docs.python.org/3/library/unittest.html    | phishing (100) | phishing (100) | legitimate (3)
+
+6. TOP 10 FEATURE IMPORTANCES COMPARISON
+------------------------------------------------------------------------------------------
+Feature Name                 | V1 Imp     | V2 Imp     | V3 Imp    
+------------------------------------------------------------------------------------------
+IsHTTPS                      | 0.3659     | 0.3603     | 0.3490    
+URLCharProb                  | 0.0238     | 0.0586     | 0.0950    
+DegitRatioInURL              | 0.0670     | 0.0660     | 0.0905    
+NoOfDegitsInURL              | 0.0661     | 0.0730     | 0.0760    
+DomainLength                 | 0.0174     | 0.0295     | 0.0738    
+TLDLegitimateProb            | 0.0260     | 0.0499     | 0.0683    
+CharContinuationRate         | 0.0230     | 0.0357     | 0.0365    
+NoOfOtherSpecialCharsInURL   | 0.1241     | 0.1132     | 0.0355    
+SpacialCharRatioInURL        | 0.0606     | 0.0269     | 0.0321    
+NoOfSubDomain                | 0.0368     | 0.0353     | 0.0299    
+
+7. REMAINING ERRORS IN V3
+------------------------------------------------------------------------------------------
+Remaining False Positives: 0
+Remaining False Negatives: 0

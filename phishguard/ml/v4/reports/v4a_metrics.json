@@ -1,0 +1,17 @@
+{
+  "model_name": "Random Forest V4-A",
+  "training_samples": 235330,
+  "test_samples": 47284,
+  "accuracy": 0.9792530242788258,
+  "precision_phishing": 0.9887123959344195,
+  "recall_phishing": 0.9622228849786261,
+  "f1_phishing": 0.9752878051238129,
+  "fpr_on_legitimate": 0.008135168961201502,
+  "fnr_on_phishing": 0.037777115021373896,
+  "confusion_matrix": {
+    "true_phishing_detected": 19358,
+    "phishing_missed": 760,
+    "legitimate_false_alarms": 221,
+    "true_legitimate_passed": 26945
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "https://chatgpt.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.98,
+    "legit_prob": 0.02,
+    "risk_score": 98
+  },
+  "https://chatgpt.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.9,
+    "legit_prob": 0.1,
+    "risk_score": 90
+  },
+  "https://openai.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.95,
+    "legit_prob": 0.05,
+    "risk_score": 95
+  },
+  "https://openai.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.91,
+    "legit_prob": 0.09,
+    "risk_score": 91
+  },
+  "https://google.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.95,
+    "legit_prob": 0.05,
+    "risk_score": 95
+  },
+  "https://google.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.92,
+    "legit_prob": 0.08,
+    "risk_score": 92
+  },
+  "https://www.google.com/": {
+    "prediction": "legitimate",
+    "label": 1,
+    "phishing_prob": 0.15,
+    "legit_prob": 0.85,
+    "risk_score": 15
+  },
+  "https://www.google.com": {
+    "prediction": "legitimate",
+    "label": 1,
+    "phishing_prob": 0.05,
+    "legit_prob": 0.95,
+    "risk_score": 5
+  },
+  "https://microsoft.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.96,
+    "legit_prob": 0.04,
+    "risk_score": 96
+  },
+  "https://microsoft.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.92,
+    "legit_prob": 0.08,
+    "risk_score": 92
+  },
+  "https://apple.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.92,
+    "legit_prob": 0.08,
+    "risk_score": 92
+  },
+  "https://apple.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.94,
+    "legit_prob": 0.06,
+    "risk_score": 94
+  },
+  "https://github.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.95,
+    "legit_prob": 0.05,
+    "risk_score": 95
+  },
+  "https://github.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.91,
+    "legit_prob": 0.09,
+    "risk_score": 91
+  },
+  "https://youtube.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.97,
+    "legit_prob": 0.03,
+    "risk_score": 97
+  },
+  "https://youtube.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.9,
+    "legit_prob": 0.1,
+    "risk_score": 90
+  },
+  "https://amazon.com/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.95,
+    "legit_prob": 0.05,
+    "risk_score": 95
+  },
+  "https://amazon.com": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.91,
+    "legit_prob": 0.09,
+    "risk_score": 91
+  },
+  "https://wikipedia.org/": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.95,
+    "legit_prob": 0.05,
+    "risk_score": 95
+  },
+  "https://wikipedia.org": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.92,
+    "legit_prob": 0.08,
+    "risk_score": 92
+  },
+  "http://paypal-security-update.account-verify.com/login.php?user=123&token=abc": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 1.0,
+    "legit_prob": 0.0,
+    "risk_score": 100
+  },
+  "http://www.shprakserf.gq": {
+    "prediction": "phishing",
+    "label": 0,
+    "phishing_prob": 0.95,
+    "legit_prob": 0.05,
+    "risk_score": 95
+  }
+}

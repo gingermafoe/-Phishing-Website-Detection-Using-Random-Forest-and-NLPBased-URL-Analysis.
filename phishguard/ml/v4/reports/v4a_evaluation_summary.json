@@ -1,0 +1,394 @@
+{
+  "holdout_results": [
+    {
+      "url": "https://klattendance.vercel.app/",
+      "v3_prediction": "phishing",
+      "v3_risk": 87,
+      "v3_prob": 0.87,
+      "v3_tld_prob": 0.001502,
+      "v4a_prediction": "phishing",
+      "v4a_risk": 87,
+      "v4a_prob": 0.87,
+      "v4a_tld_prob": 0.0069774
+    },
+    {
+      "url": "https://klhunderground.ai.studio",
+      "v3_prediction": "phishing",
+      "v3_risk": 70,
+      "v3_prob": 0.7,
+      "v3_tld_prob": 0.0002622,
+      "v4a_prediction": "phishing",
+      "v4a_risk": 72,
+      "v4a_prob": 0.72,
+      "v4a_tld_prob": 0.000923
+    }
+  ],
+  "regression_results": [
+    {
+      "url": "https://google.com",
+      "v3_pred": "legitimate",
+      "v3_risk": 13,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 14,
+      "status": "INTACT"
+    },
+    {
+      "url": "https://www.google.com",
+      "v3_pred": "legitimate",
+      "v3_risk": 0,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 0,
+      "status": "INTACT"
+    },
+    {
+      "url": "https://chatgpt.com",
+      "v3_pred": "legitimate",
+      "v3_risk": 0,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 0,
+      "status": "INTACT"
+    },
+    {
+      "url": "https://github.com/about",
+      "v3_pred": "legitimate",
+      "v3_risk": 2,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 1,
+      "status": "INTACT"
+    },
+    {
+      "url": "https://github.com/search?q=random+forest",
+      "v3_pred": "legitimate",
+      "v3_risk": 1,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 0,
+      "status": "INTACT"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Computer_science",
+      "v3_pred": "legitimate",
+      "v3_risk": 0,
+      "v4a_pred": "phishing",
+      "v4a_risk": 52,
+      "status": "REGRESSED"
+    },
+    {
+      "url": "https://docs.python.org/3/library/unittest.html",
+      "v3_pred": "legitimate",
+      "v3_risk": 3,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 17,
+      "status": "INTACT"
+    }
+  ],
+  "modern_hosting_benchmark": [
+    {
+      "url": "https://my-portfolio.vercel.app",
+      "platform": "Vercel",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "phishing",
+      "v4a_risk": 97
+    },
+    {
+      "url": "https://react-dashboard.vercel.app/login",
+      "platform": "Vercel",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 72,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 18
+    },
+    {
+      "url": "https://docs.vercel.app/getting-started",
+      "platform": "Vercel",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 39,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 13
+    },
+    {
+      "url": "https://shop.vercel.app/products?category=shoes",
+      "platform": "Vercel",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 8,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 1
+    },
+    {
+      "url": "https://react-app.netlify.app",
+      "platform": "Netlify",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "phishing",
+      "v4a_risk": 97
+    },
+    {
+      "url": "https://react-app.netlify.app/",
+      "platform": "Netlify",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "phishing",
+      "v4a_risk": 97
+    },
+    {
+      "url": "https://vitejs.netlify.app/docs/intro",
+      "platform": "Netlify",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 59,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 12
+    },
+    {
+      "url": "https://my-site.netlify.app/search?q=react",
+      "platform": "Netlify",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 24,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 3
+    },
+    {
+      "url": "https://my-blog.pages.dev",
+      "platform": "Cloudflare Pages",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 82,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 44
+    },
+    {
+      "url": "https://dashboard.pages.dev/analytics",
+      "platform": "Cloudflare Pages",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 20,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 8
+    },
+    {
+      "url": "https://web-app.pages.dev/api/v1/status",
+      "platform": "Cloudflare Pages",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 87,
+      "v4a_pred": "phishing",
+      "v4a_risk": 76
+    },
+    {
+      "url": "https://my-project.web.app",
+      "platform": "Firebase",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "phishing",
+      "v4a_risk": 100
+    },
+    {
+      "url": "https://my-project.firebaseapp.com",
+      "platform": "Firebase",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 99,
+      "v4a_pred": "phishing",
+      "v4a_risk": 99
+    },
+    {
+      "url": "https://my-project.firebaseapp.com/dashboard/home",
+      "platform": "Firebase",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 4,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 12
+    },
+    {
+      "url": "https://subdomain.example.app",
+      "platform": ".app",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 99,
+      "v4a_pred": "phishing",
+      "v4a_risk": 89
+    },
+    {
+      "url": "https://subdomain.example.dev",
+      "platform": ".dev",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 79,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 49
+    },
+    {
+      "url": "https://subdomain.example.ai",
+      "platform": ".ai",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 17,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 23
+    },
+    {
+      "url": "https://subdomain.example.studio",
+      "platform": ".studio",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 49,
+      "v4a_pred": "phishing",
+      "v4a_risk": 63
+    },
+    {
+      "url": "https://subdomain.example.tech",
+      "platform": ".tech",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 58,
+      "v4a_pred": "phishing",
+      "v4a_risk": 67
+    },
+    {
+      "url": "https://subdomain.example.io",
+      "platform": ".io",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 52,
+      "v4a_pred": "phishing",
+      "v4a_risk": 62
+    },
+    {
+      "url": "https://subdomain.example.org",
+      "platform": ".org",
+      "expected": "legitimate",
+      "v3_pred": "legitimate",
+      "v3_risk": 9,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 18
+    }
+  ],
+  "adversarial_paired_tests": [
+    {
+      "url": "https://zustand.vercel.app",
+      "category": "Vercel Clean (Legit)",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 99,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 12
+    },
+    {
+      "url": "https://metamask-security-auth.vercel.app/login",
+      "category": "Vercel Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 91,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 37
+    },
+    {
+      "url": "https://chase-bank-verify.vercel.app/account",
+      "category": "Vercel Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 85,
+      "v4a_pred": "phishing",
+      "v4a_risk": 54
+    },
+    {
+      "url": "https://alpinejs.netlify.app",
+      "category": "Netlify Clean (Legit)",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 99,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 7
+    },
+    {
+      "url": "https://paypal-update-center.netlify.app/signin",
+      "category": "Netlify Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 93,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 38
+    },
+    {
+      "url": "https://apple-id-verify.netlify.app/recovery",
+      "category": "Netlify Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 83,
+      "v4a_pred": "phishing",
+      "v4a_risk": 50
+    },
+    {
+      "url": "https://cloudflare-docs.pages.dev",
+      "category": "Cloudflare Clean (Legit)",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 85,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 10
+    },
+    {
+      "url": "https://netflix-billing-update.pages.dev/payment",
+      "category": "Cloudflare Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 84,
+      "v4a_pred": "phishing",
+      "v4a_risk": 81
+    },
+    {
+      "url": "https://dart-pad.web.app",
+      "category": "Firebase Clean (Legit)",
+      "expected": "legitimate",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 16
+    },
+    {
+      "url": "https://coinbase-auth-verify.web.app/login",
+      "category": "Firebase Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 94,
+      "v4a_pred": "phishing",
+      "v4a_risk": 64
+    },
+    {
+      "url": "https://wells-fargo-alert.firebaseapp.com/secure",
+      "category": "Firebase Phish Lure",
+      "expected": "phishing",
+      "v3_pred": "legitimate",
+      "v3_risk": 41,
+      "v4a_pred": "legitimate",
+      "v4a_risk": 47
+    },
+    {
+      "url": "http://198.98.58.123/",
+      "category": "Raw IP Phishing",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "phishing",
+      "v4a_risk": 100
+    },
+    {
+      "url": "http://www.shprakserf.gq",
+      "category": "HTTP Obscure Phishing",
+      "expected": "phishing",
+      "v3_pred": "phishing",
+      "v3_risk": 100,
+      "v4a_pred": "phishing",
+      "v4a_risk": 100
+    }
+  ]
+}

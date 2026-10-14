@@ -1,0 +1,16 @@
+{
+  "model_name": "Random Forest V3 (Production Baseline)",
+  "test_samples": 47284,
+  "accuracy": 0.970814651890703,
+  "precision_phishing": 0.9920693277310925,
+  "recall_phishing": 0.9389104284720151,
+  "f1_phishing": 0.9647581592522602,
+  "fpr_on_legitimate": 0.0055584186114996685,
+  "fnr_on_phishing": 0.06108957152798489,
+  "confusion_matrix": {
+    "true_phishing_detected": 18889,
+    "phishing_missed": 1229,
+    "legitimate_false_alarms": 151,
+    "true_legitimate_passed": 27015
+  }
+}

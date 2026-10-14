@@ -1,0 +1,85 @@
+================================================================================
+PHISHGUARD: EVALUATION REPORT
+Project Title: Phishing Website Detection Using Random Forest
+Phase 1: Dataset Analysis and Random Forest Training
+================================================================================
+
+1. DATASET SAMPLE COUNTS
+--------------------------------------------------------------------------------
+- Training Samples: 188,296
+- Testing Samples:  47,074 (20% Stratified Split, random_state=42)
+- Total Clean URLs: 235,370
+
+2. PRIMARY MODEL: PRODUCTION URL-ONLY MODEL (21 Features)
+--------------------------------------------------------------------------------
+- Accuracy:  99.6644% (0.996644)
+- Precision: 99.5931% (0.995931)
+- Recall:    99.8220% (0.998220)
+- F1-Score:  99.7074% (0.997074)
+
+Confusion Matrix:
+                     Predicted Phishing (0)   Predicted Legitimate (1)
+Actual Phishing (0)          19994                        110
+Actual Legitimate (1)           48                      26922
+
+Rates:
+- False Positive Rate: 0.5472%
+- False Negative Rate: 0.1780%
+
+Classification Report:
+                precision    recall  f1-score   support
+
+  Phishing (0)     0.9976    0.9945    0.9961     20104
+Legitimate (1)     0.9959    0.9982    0.9971     26970
+
+      accuracy                         0.9966     47074
+     macro avg     0.9968    0.9964    0.9966     47074
+  weighted avg     0.9966    0.9966    0.9966     47074
+
+
+Top 15 Most Important Features (URL-Only Model):
+1     IsHTTPS                      0.365943     36.59%
+2     NoOfOtherSpecialCharsInURL   0.124096     49.00%
+3     LetterRatioInURL             0.071348     56.14%
+4     DegitRatioInURL              0.066960     62.83%
+5     NoOfDegitsInURL              0.066143     69.45%
+6     SpacialCharRatioInURL        0.060603     75.51%
+7     URLLength                    0.059391     81.45%
+8     NoOfLettersInURL             0.048271     86.28%
+9     NoOfSubDomain                0.036776     89.95%
+10    TLDLegitimateProb            0.025957     92.55%
+11    URLCharProb                  0.023847     94.93%
+12    CharContinuationRate         0.022999     97.23%
+13    DomainLength                 0.017361     98.97%
+14    TLDLength                    0.009088     99.88%
+15    NoOfQMarkInURL               0.000862     99.96%
+
+3. BENCHMARK MODEL: ALL-CLEAN MODEL (49 Features: URL + HTML)
+--------------------------------------------------------------------------------
+- Accuracy:  99.9894% (0.999894)
+- Precision: 99.9889% (0.999889)
+- Recall:    99.9926% (0.999926)
+- F1-Score:  99.9907% (0.999907)
+
+Confusion Matrix:
+                     Predicted Phishing (0)   Predicted Legitimate (1)
+Actual Phishing (0)          20101                          3
+Actual Legitimate (1)            2                      26968
+
+Top 15 Most Important Features (All-Clean Benchmark Model):
+1     LineOfCode                   0.158885     15.89%
+2     NoOfSelfRef                  0.142358     30.12%
+3     NoOfExternalRef              0.138035     43.93%
+4     NoOfImage                    0.124730     56.40%
+5     NoOfJS                       0.066122     63.01%
+6     NoOfCSS                      0.056068     68.62%
+7     HasSocialNet                 0.049264     73.55%
+8     HasCopyrightInfo             0.047095     78.26%
+9     HasDescription               0.033478     81.60%
+10    NoOfOtherSpecialCharsInURL   0.028943     84.50%
+11    LargestLineLength            0.018811     86.38%
+12    DomainTitleMatchScore        0.015657     87.94%
+13    IsHTTPS                      0.015170     89.46%
+14    HasSubmitButton              0.014815     90.94%
+15    NoOfDegitsInURL              0.011064     92.05%
+================================================================================

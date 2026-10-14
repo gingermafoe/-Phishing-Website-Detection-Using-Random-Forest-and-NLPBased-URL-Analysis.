@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+
+# Secrets and environment configurations
+.env
+*.env
+.env.*
+!.env.example
+
+# Build artifacts
+dist/
+dist-ssr/
+build/
+
+# Operating system
+.DS_Store
+Thumbs.db
