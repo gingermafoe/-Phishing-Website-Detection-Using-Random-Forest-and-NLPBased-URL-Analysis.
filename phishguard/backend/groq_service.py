@@ -1,19 +1,21 @@
 """
-PhishGuard - Groq AI Explanation Layer (Optional Service)
+PhishGuard - Groq AI Security Scrutiny Layer (Supplementary Service)
 Project: Phishing Website Detection Using Random Forest V3
 
 CRITICAL ARCHITECTURAL CONSTRAINTS:
 1. The Random Forest V3 classifier is the AUTHORITATIVE security classifier.
-2. Groq is ONLY an optional, supplementary explanation layer.
-3. Groq MUST NOT override, alter, or change the Random Forest prediction or risk score.
-4. Groq MUST NOT whitelist/blacklist domains or introduce hardcoded domain rules.
-5. If Groq is unavailable, times out, or GROQ_API_KEY is not configured:
+2. Groq is strictly an optional, supplementary explanation layer.
+3. Groq MUST NOT override, alter, or change the Random Forest prediction, probability, or risk score.
+4. Groq MUST NOT invent DNS, WHOIS, SSL certificate, domain registration, hosting, malware, or webpage-content evidence.
+5. Groq has NOT visited, crawled, or inspected the destination webpage.
+6. Groq must NOT infer that HTTPS proves legitimacy, or that no reputation match proves safety.
+7. If Groq is unavailable, times out, or GROQ_API_KEY is not configured:
    The backend returns normal Random Forest predictions with ai_explanation=None and ai_explanation_available=False.
 """
 
 import os
 import logging
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, List
 from dotenv import load_dotenv
 
 # Configure module logger
@@ -27,23 +29,25 @@ if os.path.exists(ENV_PATH):
 else:
     load_dotenv()
 
-# Default Groq model: qwen/qwen3.8-27b (active production general-purpose chat model on Groq)
+# Default Groq model: qwen/qwen3.8-27b (or llama-3.3-70b-versatile)
 DEFAULT_GROQ_MODEL = "qwen/qwen3.8-27b"
 REQUEST_TIMEOUT_SECONDS = 6.0
 
 GROQ_SYSTEM_PROMPT = (
-    "You are the explanation assistant for PhishGuard.\n\n"
-    "PhishGuard uses a Random Forest V3 machine-learning classifier as its authoritative URL security classifier.\n\n"
-    "Your job is ONLY to explain the classifier's supplied result in clear language.\n\n"
-    "You must not override, reinterpret, or change the classifier's prediction or risk score.\n\n"
-    "You must not invent evidence.\n\n"
-    "You have NOT browsed or visited the destination website.\n\n"
-    "You must not claim DNS, WHOIS, page-content, reputation, malware, registration, hosting, or threat-intelligence information unless explicitly supplied in the input.\n\n"
-    "Explain the result using only the supplied URL features, probabilities, risk score, and model analysis.\n\n"
-    "If the risk is elevated, explain which supplied characteristics contributed to the elevated risk.\n\n"
-    "If the risk is low, explain which supplied characteristics support the lower risk.\n\n"
-    "Clearly communicate that URL-only machine-learning analysis does not prove that a website is malicious or safe.\n\n"
-    "Keep the explanation concise, technical but understandable, and suitable for a cybersecurity student project."
+    "You are the senior security explanation assistant for PhishGuard.\n\n"
+    "PhishGuard uses an authoritative Random Forest V3 machine-learning classifier (21 URL lexical features) "
+    "combined with independent external threat-intelligence reputation checks.\n\n"
+    "MANDATORY ARCHITECTURAL RULES:\n"
+    "1. Random Forest V3 is AUTHORITATIVE. You must NEVER override, alter, or contradict the classifier's prediction or risk score.\n"
+    "2. Threat intelligence findings are independent external indicators. If external intelligence and Random Forest disagree, "
+    "highlight this disagreement clearly without changing either result.\n"
+    "3. You must NOT invent DNS, WHOIS, SSL certificate, domain registration, hosting, malware, or webpage-content evidence.\n"
+    "4. You have NOT visited, crawled, or inspected the destination website. Never claim the webpage was loaded.\n"
+    "5. Do NOT infer that HTTPS proves legitimacy. Phishing websites routinely use SSL/TLS encryption.\n"
+    "6. Do NOT infer that lack of a threat-intelligence match proves safety. Newly created phishing domains frequently have clean reputation histories.\n"
+    "7. Explain: (a) which extracted URL characteristics support or weaken the prediction, (b) whether threat intelligence reported matches or was unavailable, "
+    "(c) what uncertainty remains (e.g. zero-crawl limitations), and (d) practical precautions for the user.\n"
+    "8. Keep your response concise (under 250 words), structured, and professional for a cybersecurity audit."
 )
 
 
@@ -61,8 +65,8 @@ def get_groq_model() -> str:
 
 def generate_explanation(analysis_data: Dict[str, Any]) -> Tuple[Optional[str], bool]:
     """
-    Generates a concise security explanation using Groq based strictly on
-    the supplied Random Forest V3 classification outputs and lexical features.
+    Generates a structured security explanation using Groq based strictly on
+    the supplied Random Forest V3 classification outputs, lexical features, and threat intelligence.
 
     Parameters:
         analysis_data (dict): Dictionary containing:
@@ -71,7 +75,9 @@ def generate_explanation(analysis_data: Dict[str, Any]) -> Tuple[Optional[str], 
             - risk_score: 0-100 integer
             - phishing_probability: float (0.0 to 1.0)
             - legitimate_probability: float (0.0 to 1.0)
-            - features: Dict of extracted 21 lexical features (optional but recommended)
+            - features: Dict of extracted 21 lexical features
+            - threat_intel_providers: List of threat intel provider results
+            - threat_intel_summary: Dict with overall threat intel status & summary
 
     Returns:
         Tuple[Optional[str], bool]:
@@ -98,38 +104,44 @@ def generate_explanation(analysis_data: Dict[str, Any]) -> Tuple[Optional[str], 
     p_phish = analysis_data.get("phishing_probability", 0.0)
     p_legit = analysis_data.get("legitimate_probability", 1.0 - p_phish)
     features = analysis_data.get("features", {})
+    ti_providers: List[Dict[str, Any]] = analysis_data.get("threat_intel_providers", [])
+    ti_summary: Dict[str, Any] = analysis_data.get("threat_intel_summary", {})
 
     # Build concise telemetry summary
     telemetry_lines = [
-        f"- Target URL: {url}",
-        f"- Authoritative RF Prediction: {prediction.upper()}",
-        f"- Cybersecurity Risk Score: {risk_score}/100",
-        f"- Phishing Probability: {p_phish:.4f} ({round(p_phish * 100, 1)}%)",
-        f"- Legitimate Probability: {p_legit:.4f} ({round(p_legit * 100, 1)}%)",
+        f"1. Target URL: {url}",
+        f"2. Authoritative Random Forest V3 Prediction: {prediction.upper()} (Risk Score: {risk_score}/100, Phishing Probability: {p_phish:.4f}, Legitimate Probability: {p_legit:.4f})",
     ]
 
     if features:
         key_metrics = [
-            f"IsHTTPS: {features.get('IsHTTPS', 'N/A')}",
-            f"URLLength: {features.get('URLLength', 'N/A')}",
-            f"DomainLength: {features.get('DomainLength', 'N/A')}",
-            f"TLDLength: {features.get('TLDLength', 'N/A')}",
-            f"NoOfSubDomain: {features.get('NoOfSubDomain', 'N/A')}",
-            f"HasObfuscation: {features.get('HasObfuscation', 'N/A')}",
-            f"NoOfDegitsInURL: {features.get('NoOfDegitsInURL', 'N/A')}",
-            f"DegitRatioInURL: {features.get('DegitRatioInURL', 'N/A')}",
-            f"SpacialCharRatioInURL: {features.get('SpacialCharRatioInURL', 'N/A')}",
-            f"CharContinuationRate: {features.get('CharContinuationRate', 'N/A')}",
-            f"TLDLegitimateProb: {features.get('TLDLegitimateProb', 'N/A')}",
-            f"URLCharProb: {features.get('URLCharProb', 'N/A')}",
+            f"IsHTTPS={features.get('IsHTTPS', 'N/A')}",
+            f"URLLength={features.get('URLLength', 'N/A')}",
+            f"DomainLength={features.get('DomainLength', 'N/A')}",
+            f"NoOfSubDomain={features.get('NoOfSubDomain', 'N/A')}",
+            f"HasObfuscation={features.get('HasObfuscation', 'N/A')}",
+            f"NoOfObfuscatedChar={features.get('NoOfObfuscatedChar', 'N/A')}",
+            f"NoOfDegitsInURL={features.get('NoOfDegitsInURL', 'N/A')}",
+            f"DegitRatioInURL={features.get('DegitRatioInURL', 'N/A')}",
+            f"SpacialCharRatioInURL={features.get('SpacialCharRatioInURL', 'N/A')}",
+            f"CharContinuationRate={features.get('CharContinuationRate', 'N/A')}",
+            f"TLDLegitimateProb={features.get('TLDLegitimateProb', 'N/A')}",
+            f"URLCharProb={features.get('URLCharProb', 'N/A')}",
         ]
-        telemetry_lines.append("- Key Lexical Features: " + ", ".join(key_metrics))
+        telemetry_lines.append(f"3. Extracted Lexical Features: {', '.join(key_metrics)}")
+
+    if ti_providers:
+        ti_lines = []
+        for p in ti_providers:
+            ti_lines.append(f"{p.get('provider')}: status={p.get('status')} ({p.get('evidence')})")
+        telemetry_lines.append(f"4. Threat Intelligence Evidence: {'; '.join(ti_lines)}")
+        if ti_summary.get("summary"):
+            telemetry_lines.append(f"5. Threat Intelligence Overall: {ti_summary.get('summary')}")
 
     user_prompt = (
-        "Please provide a concise technical explanation for the following Random Forest V3 URL security analysis:\n\n"
+        "Please provide a concise technical security scrutiny report based strictly on the following evidence:\n\n"
         + "\n".join(telemetry_lines) + "\n\n"
-        "Explain which supplied characteristics contributed to this risk score and prediction. "
-        "Reiterate that this is URL-structure lexical analysis without visiting the destination website."
+        "Explain which supplied characteristics contributed to this risk score, how threat intelligence relates to the classifier's verdict (including any agreement or disagreement), what uncertainty remains due to zero-crawl inspection, and practical precautions."
     )
 
     try:
@@ -139,8 +151,8 @@ def generate_explanation(analysis_data: Dict[str, Any]) -> Tuple[Optional[str], 
                 {"role": "system", "content": GROQ_SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt},
             ],
-            temperature=0.2,
-            max_tokens=500,
+            temperature=0.1,
+            max_tokens=600,
             timeout=REQUEST_TIMEOUT_SECONDS,
         )
 
@@ -154,7 +166,6 @@ def generate_explanation(analysis_data: Dict[str, Any]) -> Tuple[Optional[str], 
         return content.strip(), True
 
     except Exception as e:
-        # Graceful failure: log error type without exposing API keys or crashing backend
         err_type = type(e).__name__
         logger.warning(f"[PhishGuard Groq] Explanation unavailable ({err_type}). Falling back to RF V3 output.")
         return None, False

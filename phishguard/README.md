@@ -239,15 +239,34 @@ npm run dev
 
 ---
 
-## 9. Limitations & Practical Discoveries
+---
 
-1. **Protocol Bias (`IsHTTPS`)**:
-   In this dataset, 100% of legitimate sites use HTTPS, while ~51% of phishing sites use HTTP. While historically accurate, modern threat intelligence indicates that >80% of phishing pages now adopt free TLS certificates (e.g., Let's Encrypt). While `IsHTTPS` remains informative, our model combines it with 20 other lexical features so it does not rely on HTTPS alone.
-2. **Offline Phishing Page Lifespans**:
-   Phishing sites are ephemeral. Relying on HTML features for classification introduces operational failure on suspended domains. By prioritizing URL lexical features, PhishGuard maintains a **99.66% accuracy** rate on offline and live URLs alike.
-3. **Target Leakage Precedent**:
-   Excluding `URLSimilarityIndex` was critical. Without its exclusion, any machine learning model would superficially score ~99.9% while learning zero transferable cybersecurity patterns.
+## 10. Phase 4: Live Threat Intelligence & Groq Security Scrutiny
+
+PhishGuard integrates an optional, independent live threat-intelligence layer alongside supplementary AI security scrutiny.
+
+### Core Architectural Guarantees:
+1. **Random Forest V3 is Authoritative**:
+   - The Random Forest classifier remains the primary, authoritative engine.
+   - External reputation checks or Groq explanations **never modify** the model's prediction, probability, or risk score.
+   - When external intelligence disagrees with Random Forest, the disagreement is displayed prominently.
+2. **Supported Threat Intelligence Providers**:
+   - **Google Safe Browsing API v4**: Detects active phishing, malware, and social engineering listings.
+   - **VirusTotal URL API v3**: Multi-engine antivirus and security vendor reputation.
+   - **PhishTank API**: Community and verified phishing report repository.
+3. **Groq Security Scrutiny**:
+   - Uses Groq (`qwen/qwen3.8-27b`) to synthesize an evidence-based explanation strictly from actual backend telemetry (21 URL lexical features, RF risk score, provider responses).
+   - Never invents WHOIS, DNS, or webpage content evidence. Never claims to visit destination URLs.
+4. **Zero-Crawl Safety**:
+   - The backend performs zero network fetching or rendering of destination websites, mitigating SSRF and drive-by download risks.
+
+### Running Automated Test Suite:
+```bash
+cd backend
+python test_api.py
+```
+Runs 15 automated test cases covering model integrity, provider status mapping, timeout fallbacks, and schema invariants.
 
 ---
 
-**Phase 1, Phase 2, and Phase 3 Completed and Verified.**
+**Phase 1, Phase 2, Phase 3, and Phase 4 Completed and Verified.**

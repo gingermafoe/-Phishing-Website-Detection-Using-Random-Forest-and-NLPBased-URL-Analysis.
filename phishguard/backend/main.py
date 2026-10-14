@@ -1,24 +1,27 @@
 """
 PhishGuard - FastAPI Backend Service
 Project: Phishing Website Detection Using Random Forest
-Phase 2: FastAPI Backend
+Phase 3 & 4: Live Threat Intelligence + Groq Security Scrutiny
 
 This service:
-1. Loads the pre-trained Random Forest model (ml/random_forest.pkl) at startup.
+1. Loads the pre-trained Random Forest V3 model (ml/v3/random_forest_v3.pkl) at startup.
 2. Exposes GET /api/health for system status and model readiness.
 3. Exposes POST /api/analyze to classify URLs as legitimate or phishing.
 4. Performs strict URL syntax validation without crawling or visiting the destination.
 5. Extracts exactly the 21 URL lexical features used during training.
-6. Returns prediction, binary label, classification confidence, and a 0-100 risk score.
-7. Configures CORS for seamless communication with the upcoming React frontend.
+6. Returns authoritative Random Forest prediction, binary label, classification confidence, and a 0-100 risk score.
+7. Executes independent live threat-intelligence checks (Google Safe Browsing, VirusTotal, PhishTank) when configured.
+8. Passes structured telemetry to Groq for supplementary technical explanation without modifying the ML score.
+9. Configures CORS for seamless communication with the React frontend.
 """
 
 import os
 import sys
 import re
 import urllib.parse
+from datetime import datetime, timezone
 from contextlib import asynccontextmanager
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 import joblib
 import numpy as np
@@ -48,11 +51,12 @@ load_dotenv(os.path.join(BACKEND_DIR, ".env"))
 
 import feature_config_v3 as fc_v3
 import groq_service
+import threat_intel_service
 
 MODEL_PATH = os.path.join(ML_V3_DIR, "random_forest_v3.pkl")
 
 # ------------------------------------------------------------------------------
-# 2. LIFESPAN MANAGEMENT (Load V2 Model Once on Startup)
+# 2. LIFESPAN MANAGEMENT (Load V3 Model Once on Startup)
 # ------------------------------------------------------------------------------
 ml_resources: Dict[str, Any] = {
     "model": None,
@@ -112,12 +116,12 @@ async def lifespan(app: FastAPI):
 # ------------------------------------------------------------------------------
 app = FastAPI(
     title="PhishGuard API",
-    description="High-performance machine learning backend for phishing URL detection using Random Forest.",
-    version="1.0.0",
+    description="High-performance machine learning and threat intelligence backend for phishing URL detection.",
+    version="2.0.0",
     lifespan=lifespan
 )
 
-# Configure CORS so future React frontend (e.g. on localhost:3000, 5173) can communicate
+# Configure CORS so React frontend can communicate seamlessly
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -174,9 +178,26 @@ class URLAnalyzeRequest(BaseModel):
         return cleaned
 
 
+class ThreatIntelProviderResult(BaseModel):
+    provider: str = Field(..., description="Provider name (e.g. Google Safe Browsing, VirusTotal, PhishTank).")
+    status: str = Field(..., description="Status: 'malicious_match' | 'no_match_found' | 'unknown' | 'unavailable' | 'error' | 'not_configured'.")
+    status_label: str = Field(..., description="Human-readable status label.")
+    evidence: str = Field(..., description="Exact returned evidence summary from provider.")
+    checked_at: str = Field(..., description="ISO 8601 UTC timestamp of provider check.")
+    explanation: str = Field(..., description="Explanation of what this status does and does not mean.")
+
+
+class ThreatIntelSummary(BaseModel):
+    status: str = Field(..., description="Overall status: 'malicious_match' | 'clean_matches' | 'inconclusive' | 'not_configured'.")
+    summary: str = Field(..., description="Concise overall summary distinguishing findings from unavailable checks.")
+    configured_providers_count: int = Field(default=0, description="Number of providers configured.")
+    total_providers_count: int = Field(default=3, description="Total supported providers.")
+    malicious_count: int = Field(default=0, description="Number of providers reporting threat matches.")
+
+
 class URLAnalyzeResponse(BaseModel):
     url: str = Field(..., description="The analyzed URL.")
-    prediction: str = Field(..., description="Classification outcome: 'legitimate' or 'phishing'.")
+    prediction: str = Field(..., description="Authoritative RF outcome: 'legitimate' or 'phishing'.")
     label: int = Field(..., description="Binary label: 1 for legitimate, 0 for phishing.")
     probability: float = Field(..., description="Model confidence score for the predicted class (0.0 to 1.0).")
     risk_score: int = Field(
@@ -187,6 +208,10 @@ class URLAnalyzeResponse(BaseModel):
     model_type: str = Field(default="Random Forest", description="Classifier architecture.")
     feature_count: int = Field(default=21, description="Number of lexical features extracted.")
     phishing_probability: float = Field(..., description="Exact phishing class probability.")
+    analyzed_at: str = Field(..., description="Analysis timestamp in ISO 8601 UTC format.")
+    features: Optional[Dict[str, Any]] = Field(default=None, description="Exact 21 extracted lexical feature values.")
+    threat_intel_providers: List[ThreatIntelProviderResult] = Field(default_factory=list, description="Provider-specific reputation checks.")
+    threat_intel_summary: ThreatIntelSummary = Field(..., description="Overall threat-intelligence summary.")
     ai_explanation: Optional[str] = Field(default=None, description="Optional Groq AI security explanation.")
     ai_explanation_available: bool = Field(default=False, description="Whether Groq AI explanation is available.")
 
@@ -215,16 +240,20 @@ def health_check():
 
 
 @app.post("/api/analyze", response_model=URLAnalyzeResponse, tags=["Inference"])
-def analyze_url(payload: URLAnalyzeRequest):
+async def analyze_url(payload: URLAnalyzeRequest):
     """
-    Analyzes an input URL using the pre-trained Random Forest V3 model.
+    Analyzes an input URL using Random Forest V3, queries configured threat-intelligence providers,
+    and returns a supplementary Groq security scrutiny explanation.
     
-    Workflow:
+    CRITICAL WORKFLOW:
     1. Validates syntactic structure (http:// or https:// with valid hostname).
     2. Extracts the 21 canonical URL lexical features without crawling the target page.
     3. Asserts feature vector alignment with V3 model expectations.
-    4. Runs inference through the Random Forest V3 classifier.
+    4. Runs authoritative inference through the Random Forest V3 classifier.
     5. Computes probability and the 0-100 cybersecurity risk score.
+    6. Queries configured live threat intelligence providers independently (Safe Browsing, VirusTotal, PhishTank).
+    7. Groq synthesizes a technical explanation based strictly on actual telemetry (never modifies RF result).
+    8. Returns the authoritative RF result alongside separate threat intelligence evidence.
     """
     model = get_model()
     if not model or not ml_resources["model_loaded"]:
@@ -234,6 +263,7 @@ def analyze_url(payload: URLAnalyzeRequest):
         )
 
     target_url = payload.url
+    analyzed_timestamp = datetime.now(timezone.utc).isoformat()
 
     # Feature extraction using V3 canonical host logic
     try:
@@ -262,14 +292,11 @@ def analyze_url(payload: URLAnalyzeRequest):
             detail=f"V3 feature schema mismatch: missing required feature {str(e)}"
         )
 
-    # Run Random Forest V3 prediction and probability estimation
+    # Run Authoritative Random Forest V3 prediction and probability estimation
     try:
-        # Predict class (1 = Legitimate, 0 = Phishing)
         pred_label = int(model.predict(feature_df)[0])
-        # Predict class probabilities
         prob_array = model.predict_proba(feature_df)[0]
         
-        # Explicit class mapping from model.classes_
         classes_list = list(model.classes_)
         phish_idx = classes_list.index(0)
         legit_idx = classes_list.index(1)
@@ -295,6 +322,9 @@ def analyze_url(payload: URLAnalyzeRequest):
     risk_score = int(round(prob_phishing * 100))
     risk_score = max(0, min(100, risk_score))
 
+    # Independent Threat Intelligence Reputation Checks
+    ti_providers, ti_summary = await threat_intel_service.check_all_threat_intelligence(target_url)
+
     # Optional Groq AI Explanation Layer (Random Forest V3 remains AUTHORITATIVE)
     ai_explanation, ai_available = groq_service.generate_explanation({
         "url": target_url,
@@ -303,6 +333,8 @@ def analyze_url(payload: URLAnalyzeRequest):
         "phishing_probability": prob_phishing,
         "legitimate_probability": prob_legitimate,
         "features": raw_features,
+        "threat_intel_providers": ti_providers,
+        "threat_intel_summary": ti_summary,
     })
 
     return {
@@ -315,6 +347,10 @@ def analyze_url(payload: URLAnalyzeRequest):
         "model_type": "Random Forest",
         "feature_count": 21,
         "phishing_probability": round(prob_phishing, 4),
+        "analyzed_at": analyzed_timestamp,
+        "features": raw_features,
+        "threat_intel_providers": ti_providers,
+        "threat_intel_summary": ti_summary,
         "ai_explanation": ai_explanation,
         "ai_explanation_available": ai_available,
     }
